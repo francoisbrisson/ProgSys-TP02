@@ -1,6 +1,7 @@
 #include "Huffman.h"
 #include "bitpacker.h"
 #include <sstream>
+#include <random>
 
 void Huffman::GenererDictionnaire(Noeud* n, std::string code, Dictionnaire& dictionnaire)
 {
@@ -20,7 +21,7 @@ Huffman::Noeud* Huffman::GenererArbre(std::string s)
 
 	// Calculer la frequence des caracteres
 	for (size_t i = 0; i < s.length(); ++i)
-		freq[s[i]]++;
+		freq[(unsigned char)s[i]]++;
 
 	std::priority_queue<Noeud*, std::vector<Noeud*>, Comparateur> q;
 	for (int i = 0; i < 256; ++i)
@@ -59,7 +60,7 @@ std::string Huffman::Compresser(std::string s)
 	std::stringstream outAvecDictionnaire;
 	outAvecDictionnaire << std::setw(3) << std::setfill('0') << dictionnaire.size();
 	for (const auto& e : dictionnaire)
-		outAvecDictionnaire << e.first + e.second;
+		outAvecDictionnaire << e.second + e.first;
 	outAvecDictionnaire << out.str();
 	return outAvecDictionnaire.str();
 }
@@ -68,8 +69,36 @@ std::string Huffman::Decompresser(std::string s)
 {
 	Dictionnaire dictionnaire;
 	std::string out;
+	int nbrCle = 0;
+	int i = 3;
 
+	for (std::string code = ""; nbrCle < std::stoi(s.substr(0,3)); i++)
+	{
+		if (s[i] == '1' || s[i] == '0')
+			code += s[i];
+		else
+		{
+			dictionnaire[s[i]] = code;
+			++nbrCle;
+			code = "";
+		}
+	}
 
+	for (std::string code; i < s.size(); i++)
+	{
+		code += s[i];
+		for (const auto& e : dictionnaire)
+		{
+			if (e.second == code)
+			{
+				out += e.first;
+				code = "";
+				break;
+			}
+		}
+	}
+
+	return out;
 }
 
 void Huffman::AfficherArbre(Noeud* n, int level = 0)

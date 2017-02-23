@@ -11,7 +11,7 @@ class Huffman
 {
 public:
 	static std::string Compresser(std::string s);
-	std::string Decompresser(std::string s);
+	static std::string Decompresser(std::string s);
 private:
 
 	struct Noeud
