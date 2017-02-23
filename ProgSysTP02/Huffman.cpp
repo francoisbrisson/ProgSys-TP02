@@ -48,18 +48,28 @@ std::string Huffman::Compresser(std::string s)
 	Dictionnaire dictionnaire;
 	GenererDictionnaire(GenererArbre(s), "", dictionnaire);
 
-	for (const auto& e : dictionnaire)
-		std::cout << "'" << e.first << "':" << e.second << std::endl;
-
-	BitPacker bp;
-	for (char c : s)
-		bp << dictionnaire[c];
 	std::stringstream out;
+	for (char c : s)
+		out << dictionnaire[c];
+	/*BitPacker bp;
 	auto data = bp.Get();
 	for (auto v : data)
-		out << std::hex << std::setw(2) << std::setfill('0') << static_cast<unsigned int>(v);
+		out << std::hex << std::setw(2) << std::setfill('0') << static_cast<unsigned int>(v);*/
 
-	return out.str();
+	std::stringstream outAvecDictionnaire;
+	outAvecDictionnaire << std::setw(3) << std::setfill('0') << dictionnaire.size();
+	for (const auto& e : dictionnaire)
+		outAvecDictionnaire << e.first + e.second;
+	outAvecDictionnaire << out.str();
+	return outAvecDictionnaire.str();
+}
+
+std::string Huffman::Decompresser(std::string s)
+{
+	Dictionnaire dictionnaire;
+	std::string out;
+
+
 }
 
 void Huffman::AfficherArbre(Noeud* n, int level = 0)
