@@ -21,7 +21,7 @@ Huffman::Noeud* Huffman::GenererArbre(std::string s)
 
 	// Calculer la frequence des caracteres
 	for (size_t i = 0; i < s.length(); ++i)
-		freq[(unsigned char)s[i]]++;
+		freq[static_cast<unsigned char>(s[i])]++;
 
 	std::priority_queue<Noeud*, std::vector<Noeud*>, Comparateur> q;
 	for (int i = 0; i < 256; ++i)
@@ -72,9 +72,9 @@ std::string Huffman::Decompresser(std::string s)
 	int nbrCle = 0;
 	int i = 3;
 
-	for (std::string code = ""; nbrCle < std::stoi(s.substr(0,3)); i++)
+	for (std::string code = ""; nbrCle < std::stoi(s.substr(0, 3)); i++)
 	{
-		if (s[i] == '1' || s[i] == '0')
+		if ((s[i]) == '1' || (s[i]) == '0')
 			code += s[i];
 		else
 		{
@@ -83,6 +83,7 @@ std::string Huffman::Decompresser(std::string s)
 			code = "";
 		}
 	}
+
 
 	for (std::string code; i < s.size(); i++)
 	{
@@ -115,5 +116,3 @@ void Huffman::AfficherArbre(Noeud* n, int level = 0)
 		std::cout << "[" << n->c << "]" << std::endl;
 	AfficherArbre(n->gauche, level + 1);
 }
-
-

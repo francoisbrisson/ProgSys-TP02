@@ -1,3 +1,6 @@
+#ifndef BITPACKER_H__
+#define BITPACKER_H__
+
 #include <vector>
 #include <string>
 class BitPacker
@@ -44,3 +47,4 @@ class BitPacker
         int m_currentBitCount;
 };
 
+#endif
